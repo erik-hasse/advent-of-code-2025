@@ -1,6 +1,7 @@
 (ns day2
   (:require [clojure.string :as str]))
 
+; data
 (defn parse-item [x]
   (->>
     (str/split x #"-")
@@ -12,20 +13,22 @@
     (str/split (slurp "inputs/day2") #",")
     (map parse-item)))
 
-(defn check [x]
+; part 1
+(defn check [pattern x]
   (->>
     x
     (str)
-    (re-find #"^(\d+)(\1)$")
+    (re-find pattern)
     (nil?)
     (not)))
 
-(defn check-range [start stop]
-  (apply + (filter check (range start (+ stop 1)))))
+(defn check-range [pattern start stop]
+  (apply + (filter (partial check pattern) (range start (+ stop 1)))))
 
-(defn part1 [inputs]
-  (apply + (map #(apply check-range %) inputs)))
+(defn solve [pattern inputs]
+  (apply + (map #(apply (partial check-range pattern) %) inputs)))
 
+(println "Part 1: " (solve #"^(\d+)(\1)$"  input))
 
-(println (part1 input))
-
+; part 2
+(println "Part 2: " (solve #"^(\d+)(\1)+$" input))
