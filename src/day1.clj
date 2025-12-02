@@ -5,8 +5,7 @@
 (defn parse-line [x]
   (->
     x
-    (str/replace "R" "")
-    (str/replace "L" "-")
+    (str/replace #"R|L" {"R" "" "L" "-"})
     (parse-long)))
 
 (def input
@@ -16,8 +15,6 @@
     (map parse-line)
     vec))
 
-(Math/floorMod -106 100)
-(mod -106 100)
 ; part 1
 (defn step [current move]
   (mod (+ current move) 100))
@@ -28,7 +25,7 @@
     (filter zero?)
     (count)))
 
-(part1 50 input)
+(println "Part 1: " (part1 50 input))
 
 ; part 2
 (defn gen-steps [steps move]
@@ -47,5 +44,4 @@
     (count)))
 
 
-(part2 50 input)
-
+(println "Part 2: " (part2 50 input))
