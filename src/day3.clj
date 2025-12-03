@@ -3,29 +3,30 @@
 
 (def input
   (->>
-    (slurp "inputs/day3")
-    (str/trim)
-    (str/split-lines)))
+    "inputs/day3"
+    slurp
+    str/trim
+    str/split-lines))
 
-(defn get-max [x]
-  (str (apply max (map ^[char] Character/getNumericValue x))))
+(defn get-max [s]
+  (char (apply max (map int s))))
 
-(defn get-rest [x next-char]
-  (apply str (drop (inc (str/index-of x next-char)) x)))
+(defn remove-up-to [s c]
+  (let [idx (str/index-of s c)]
+    (subs s (inc idx))))
 
-(defn get-next [x n]
+(defn pick-digits [x n]
   (if (= 1 n)
     [(get-max x)]
     (let
       [next-char (get-max (subs x 0 (- (count x) n -1)))]
-      (concat [next-char] (get-next (get-rest x next-char) (dec n))))))
+      (cons next-char (pick-digits (remove-up-to x next-char) (dec n))))))
 
 (defn get-joltage [n x]
-  (parse-long (apply str (get-next x n))))
+  (parse-long (str/join (pick-digits x n))))
 
 (defn solve [input n]
   (reduce + (map (partial get-joltage n) input)))
-
 
 (println "Part 1: " (solve input 2))
 (println "Part 2: " (solve input 12))
