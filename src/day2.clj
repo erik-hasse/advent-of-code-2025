@@ -5,28 +5,28 @@
 (defn parse-item [x]
   (->>
     (str/split x #"-")
-    (map parse-long)
-    (vec)))
+    (mapv parse-long)))
 
 (def input
   (->>
     (str/split (slurp "inputs/day2") #",")
-    (map parse-item)))
+    (mapv parse-item)))
 
 ; part 1
 (defn check [pattern x]
-  (->>
-    x
-    (str)
-    (re-find pattern)
-    (nil?)
-    (not)))
+  (boolean (re-find pattern (str x))))
 
 (defn check-range [pattern start stop]
-  (apply + (filter (partial check pattern) (range start (+ stop 1)))))
+  (->>
+    (range start (inc stop))
+    (filter (partial check pattern))
+    (reduce +)))
 
 (defn solve [pattern inputs]
-  (apply + (map #(apply (partial check-range pattern) %) inputs)))
+  (->>
+    inputs
+    (map (fn [[start stop]] (check-range pattern start stop)))
+    (reduce +)))
 
 (println "Part 1: " (solve #"^(\d+)(\1)$"  input))
 
