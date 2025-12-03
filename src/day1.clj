@@ -25,7 +25,7 @@
     (filter zero?)
     (count)))
 
-(println "Part 1: " (part1 50 input))
+(println "Part 1:" (time (part1 50 input)))
 
 ; part 2
 (defn gen-steps [steps move]
@@ -44,4 +44,4 @@
     (count)))
 
 
-(println "Part 2: " (part2 50 input))
+(println "Part 2:" (time (part2 50 input)))

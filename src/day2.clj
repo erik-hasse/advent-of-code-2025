@@ -28,7 +28,7 @@
     (map (fn [[start stop]] (check-range pattern start stop)))
     (reduce +)))
 
-(println "Part 1: " (solve #"^(\d+)(\1)$"  input))
+(println "Part 1:" (time (solve #"^(\d+)(\1)$"  input)))
 
 ; part 2
-(println "Part 2: " (solve #"^(\d+)(\1)+$" input))
+(println "Part 2:" (time (solve #"^(\d+)(\1)+$" input)))

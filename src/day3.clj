@@ -23,10 +23,16 @@
       (cons next-char (pick-digits (remove-up-to x next-char) (dec n))))))
 
 (defn get-joltage [n x]
-  (parse-long (str/join (pick-digits x n))))
+  (->
+    (pick-digits x n)
+    str/join
+    parse-long))
 
 (defn solve [input n]
-  (reduce + (map (partial get-joltage n) input)))
+  (->>
+    input
+    (map (partial get-joltage n))
+    (reduce +)))
 
-(println "Part 1: " (solve input 2))
-(println "Part 2: " (solve input 12))
+(println "Part 1:" (time (solve input 2)))
+(println "Part 2:" (time (solve input 12)))
