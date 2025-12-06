@@ -13,7 +13,7 @@
   (mapv (partial mapv parse-long) (pop part1-input)))
 
 (defn compute [op items]
-  (reduce (ns-resolve *ns* (symbol op)) items))
+  (reduce ({"*" * "+" +} op) items))
 
 (defn part1 [ops nums]
   (reduce + (map compute ops (apply map vector nums))))
@@ -44,5 +44,5 @@
 
 (defn part2 [ops nums]
   (reduce + (map compute ops nums)))
-part2-numbers
+
 (println "Part 1:" (time (part2 operations part2-numbers)))

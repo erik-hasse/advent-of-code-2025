@@ -8,9 +8,7 @@
     (str/split #"\n\n")))
 
 (defn parse-range [x]
-  (->>
-    (str/split x #"-")
-    (mapv parse-long)))
+    (mapv parse-long (str/split x #"-")))
 
 (def ranges
   (->>
@@ -28,9 +26,9 @@
   (and (>= id start) (<= id stop)))
 
 (defn in-any [id]
-  (some true? (map (partial in-range id) ranges)))
+  (some (partial in-range id) ranges))
 
-(def part1 (count (keep  in-any ids)))
+(def part1 (count (filter  in-any ids)))
 (println "Part 1:" (time part1))
 
 (defn collapse-ranges [[[last-start last-stop] & rest :as full] [start stop]]
@@ -43,6 +41,4 @@
 (def part2
   (reduce collapse-ranges [(first sorted-ranges)] (rest sorted-ranges)))
 
-(defn get-size [[start stop]]
-  (inc (- stop start)))
-(println (reduce + (map get-size part2)))
+(println "Part 2:" (time (reduce + (map (fn [[start stop]] (inc (- stop start))) part2))))
