@@ -30,4 +30,19 @@
 (defn in-any [id]
   (some true? (map (partial in-range id) ranges)))
 
-(count (keep  in-any ids))
+(def part1 (count (keep  in-any ids)))
+(println "Part 1:" (time part1))
+
+(defn collapse-ranges [[[last-start last-stop] & rest :as full] [start stop]]
+  (if (<= start (inc last-stop))
+    (cons [last-start (max stop last-stop)] rest)
+    (cons [start stop] full)))
+
+
+(def sorted-ranges (sort ranges))
+(def part2
+  (reduce collapse-ranges [(first sorted-ranges)] (rest sorted-ranges)))
+
+(defn get-size [[start stop]]
+  (inc (- stop start)))
+(println (reduce + (map get-size part2)))
